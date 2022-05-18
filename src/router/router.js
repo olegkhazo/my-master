@@ -53,7 +53,7 @@ const routes = [
     }
 ]
 
-const router =createRouter({
+const router = createRouter({
     routes,
     history: createWebHistory()
 });
