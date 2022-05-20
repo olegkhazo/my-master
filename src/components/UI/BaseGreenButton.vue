@@ -1,5 +1,5 @@
 <template>
-  <button class="baseGreenButton">
+  <button class="baseGreenButton" type="submit"> 
     <slot></slot>
   </button>
 </template>
@@ -19,6 +19,7 @@ export default {
   border: none;
   padding: 12px 18px;
 }
+
 
 @media (max-width: 991px) {
   .baseGreenButton {

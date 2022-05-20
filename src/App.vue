@@ -34,4 +34,13 @@ a {
   text-decoration: none;
 }
 
+small {
+  display: block;
+  color: red;
+}
+
+.invalid {
+  border: 2px solid red !important;
+}
+
 </style>

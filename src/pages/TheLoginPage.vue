@@ -2,15 +2,36 @@
   <the-header></the-header>
   <div class="registrationBlock">
     <div class="container">
-      <form action="" name="userReg">
+      <form 
+      action="" 
+      name="userReg"
+      @submit.prevent="submitHandler"
+      >
         <h1>Войти</h1>
-        <input type="email" name="email" placeholder="Email" />
-        <br />
-        <input type="password" name="" id="" placeholder="Пароль" />
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Email" 
+          v-model="email"
+          :class="{invalid: v$.email.$dirty && v$.email.$invalid }"
+        />
+        <small v-if="v$.email.$dirty && !v$.email.required.$response">Введите имейл</small>
+        <small v-else-if="v$.email.$dirty && v$.email.$error">Введите корректный имейл</small>
+        <input 
+        type="password" 
+        name="password" 
+        id="password" 
+        placeholder="Пароль" 
+        v-model="password"
+        :class="{invalid: v$.password.$dirty && v$.password.$invalid }"
+
+        />
+        <small v-if="v$.password.$dirty && !v$.password.required.$response">Введите пароль</small>
+        <small v-else-if="v$.password.$dirty && v$.password.$error">Введите корректный пароль. Не меньше {{ v$.password.minLength.$params.min }} символов</small>
         <br />
         <base-green-button>Войти</base-green-button>
         <br /> <br />
-        <p class="haveAnAccount">Нет аккаунта? Зарегестрируйтесь.</p>
+        <router-link to="/registration" class="haveAnAccount">Нет аккаунта? Зарегестрируйтесь.</router-link>
         <hr />
       </form>
     </div>
@@ -21,12 +42,38 @@
 <script>
 import TheHeader from "@/components/TheHeader.vue";
 import TheFooter from "@/components/TheFooter.vue";
+import {useVuelidate} from '@vuelidate/core';
+import { email, required, minLength } from '@vuelidate/validators';
 
 export default {
+  name: 'login',
   components: {
     TheHeader,
     TheFooter,
   },
+  data() {
+    return {
+      email: '',
+      password: '',
+      passwordLength: 8
+    }
+  },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+      email: { email, required },
+      password: { required, minLength: minLength(this.passwordLength) }
+    }
+  },
+  methods: {
+    submitHandler() {
+      if(this.v$.$invalid) {
+        this.v$.$touch()
+        return
+      }
+      this.$router.push('/admin-panel');
+    }
+  }
 };
 </script>
 
@@ -159,4 +206,5 @@ form hr {
     font-size: 10px;
   }
 }
+
 </style>

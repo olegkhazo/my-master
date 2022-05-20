@@ -2,11 +2,25 @@
   <the-header></the-header>
   <div class="registrationBlock">
     <div class="container">
-      <form action="" name="userReg">
+      <form action="" name="userReg" @submit.prevent="submitHandler">
         <h1>Регистрация</h1>
-        <input type="tel" name="phoneNumber" placeholder="Телефон" />
-        <br />
-        <input type="email" name="email" placeholder="Email" />
+        <input 
+        type="tel" 
+        name="phoneNumber" 
+        placeholder="Телефон" 
+        v-model="phone"
+        :class="{invalid: v$.phone.$dirty && v$.phone.$invalid }"        
+        />        
+        <small v-if="v$.phone.$dirty && v$.phone.$error">Введите корректный телефон, не короче {{ v$.phone.minLength.$params.min }} цифр и символов</small>
+        <input 
+        type="email" 
+        name="email" 
+        placeholder="Email" 
+        v-model="email"
+        :class="{invalid: v$.email.$dirty && v$.email.$invalid }"
+        />
+        <small v-if="v$.email.$dirty && !v$.email.required.$response">Введите имейл</small>
+        <small v-else-if="v$.email.$dirty && v$.email.$error">Введите корректный имейл</small>
         <br />
         <label for="client"
           ><input
@@ -42,7 +56,11 @@
           type="text"
           name="companyName"
           placeholder="Имя/Название компании"
+          v-model="name"
+          
         />
+        <small v-if="v$.name.$dirty && !v$.name.required.$response">Введите имя/название компании</small>
+        <small v-else-if="v$.name.$dirty && v$.name.$error">Введите корректное имя/название компании, не короче {{ v$.name.minLength.$params.min }} символов</small>
         <br />
         <select name="city" id="">
           <option disabled selected>Город</option>
@@ -52,12 +70,19 @@
           <option value="odessa">Одесса</option>
         </select>
         <br />
-        <input type="password" name="" id="" placeholder="Пароль" />
-        <br />
-        <input type="password" name="" id="" placeholder="Повторите пароль" />
+        <input 
+        type="password" 
+        name="" 
+        id="" 
+        placeholder="Пароль" 
+        :class="{invalid: v$.password.$dirty && v$.password.$invalid }"
+        />
+        <small v-if="v$.password.$dirty && !v$.password.required.$response">Введите пароль</small>
+        <small v-else-if="v$.password.$dirty && v$.password.$error">Введите корректный пароль. Не меньше {{ v$.password.minLength.$params.min }} символов</small>
         <br />
         <base-green-button>Зарегестрироваться</base-green-button>
-        <br /> <br />
+        <br />
+        <br />
         <p class="haveAnAccount">Уже есть аккаунт?</p>
         <hr />
         <p class="formPolicy">
@@ -74,12 +99,49 @@
 <script>
 import TheHeader from "@/components/TheHeader.vue";
 import TheFooter from "@/components/TheFooter.vue";
+import { useVuelidate } from '@vuelidate/core';
+import { email, required, minLength } from '@vuelidate/validators';
+
 
 export default {
+  name: "registration",
   components: {
     TheHeader,
     TheFooter,
   },
+  data() {
+    return {
+      phone: "",
+      email: "",
+      status: "",
+      name: "",
+      city: "",
+      password: "",
+      passwordLength: 8,
+      nameLength: 2,
+      phoneLength: 8,
+    };
+  },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+      phone: { required, minLength: minLength(this.phoneLength) },
+      email: { required, email },
+      name: { required, minLength: minLength(this.nameLength) },
+      password: { required, minLength: minLength(this.passwordLength) },
+    };
+  },
+  methods: {
+    submitHandler() {
+      if (this.v$.$invalid) {
+        this.v$.$touch();
+        return;
+      }
+      this.$router.push("/admin-panel");
+    },
+    
+  },
+
 };
 </script>
 
