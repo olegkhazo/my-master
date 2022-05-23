@@ -21,6 +21,8 @@
                     <the-master-preview></the-master-preview>
                     <the-master-preview></the-master-preview>
                 </div>
+                <br />
+                <base-green-button @click="$router.push('/find-masters')">Смотреть всех мастеров</base-green-button>
             </div>
         </div>
     <the-footer></the-footer>

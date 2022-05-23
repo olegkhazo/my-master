@@ -1,5 +1,5 @@
 <template>
-  <select class="greenSelect" v-model="modelValue" name="marka" id="" @change="changeOption">
+  <select class="greenSelect" v-model="modelValue" name="" id="" @change="changeOption">
     <option disabled value="">{{ title }}</option>
     <option 
     v-for="option in options" 
@@ -37,7 +37,6 @@ export default {
 <style scoped>
 .greenSelect {
   border: 2px solid #37a000;
-  width: 335px;
   height: 48px;
   border-radius: 5px;
   color: rgba(0, 0, 0, 1);
@@ -47,11 +46,12 @@ export default {
   background-repeat: no-repeat;
   background-position: 94% 50%;
   padding-left: 10px;
+  padding-right: 60px;
+
 }
 
 @media (max-width: 429px) {
   .greenSelect {
-    width: 255px;
     font-size: 16px;
   }
 }

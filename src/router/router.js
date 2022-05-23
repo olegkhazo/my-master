@@ -8,6 +8,8 @@ import TheSecondOrderStep from '@/pages/order/TheSecondOrderStep';
 import TheThirdOrderStep from '@/pages/order/TheThirdOrderStep';
 import TheFinalOrderStep from '@/pages/order/TheFinalOrderStep';
 import TheNotifficationPage from '@/pages/TheNotifficationPage';
+import TheMastersPage from '@/pages/TheMastersPage';
+
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -50,6 +52,10 @@ const routes = [
     {
         path: '/notiffications',
         component: TheNotifficationPage
+    },
+    {
+        path: '/find-masters',
+        component: TheMastersPage
     }
 ]
 
